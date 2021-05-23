@@ -417,11 +417,16 @@
 
 
         }
-        $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
-            return result;
-        }).then(function (result) {
-            redrawAll(result[1], result[0]);
-        });
+        // $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
+        //     return result;
+        // }).then(function (result) {
+        //     redrawAll(result[1], result[0]);
+        // });
+
+        fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
+            .then(response => response.json())
+            .then(data => redrawAll(data[1], data[0]););
+
 
 
 
