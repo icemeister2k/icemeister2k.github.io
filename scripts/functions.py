@@ -320,7 +320,7 @@ def buildNetwork(dat_filtered):
         node_id.append(j)
         node_name.append(b[j])
 
-        temp=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j],na=False)]
+        temp=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j])]
         node_group.append(1/((len(b)-j)/len(b)))
 
         #node Probability
@@ -338,26 +338,37 @@ def buildNetwork(dat_filtered):
                 #copy pA,pB from node data
                 edge_pA.append(f[j])
                 edge_pB.append(f[e2])
+                #A num symptoms 
+                nA=len(temp)
                 #compute pAB
                 edge_pAB.append(f[j]*f[e2])
                 #calculate  pB|A
-                nBIA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[i]])
+                nBIA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[i])])
                 num.append(nBIA)
-                edge_pBIA.append(nBIA/d[e2])
-                #calculate  pBuA
-                edge_pBuA.append((nBIA/d[e2])*f[j])
+                if nA != 0:
+                    edge_pBIA.append(nBIA/nA)
+                    #calculate  pBuA
+                    edge_pBuA.append((nBIA/nA)*f[j])
+                else:
+                    edge_pBIA.append(0)
+                    #calculate  pBuA
+                    edge_pBuA.append(0)
+                    
                 #calculate pA|B 
-                #A num symptoms 
-                nA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[j]])
-                A_dat=temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[j]]
+                temp_b=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[i])]
+                nB=len(temp_b)
+                
+                nAIB = len(temp_b[temp_b['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j])])
                 #num A symptoms also containing B
-                nAIB=len(A_dat[A_dat['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[i]])
                 #append if nA is not 0
                 if nA != 0:
-                    edge_pAIB.append(nAIB/nA)
+                    edge_pAIB.append(nAIB/nB)
                 else:
                     edge_pAIB.append(0)
-                edge_pAuB.append((nAIB/nA)*f[e2])
+                if nA != 0:
+                    edge_pAuB.append((nAIB/nB)*f[e2])
+                else:
+                    edge_pAuB.append(0)
 
     edges=pd.DataFrame({'from': edge1, 'to': edge2,
                         'value': edge_pBIA,
@@ -366,14 +377,9 @@ def buildNetwork(dat_filtered):
                         "fnode":edge_from,"tnode":edge_to,
                        "p(A|B)":edge_pAIB,"p(B|A)":edge_pBIA,"p(BuA)":edge_pBuA,"p(AuB)":edge_pAuB
                        })
-    #remove comparisons against self
-    #edges=edges[edges["p(A|B)"]<0.99]
-    edges.sort_values(by=['p(AuB)'])[-50:-1]
     edges=edges.iloc[:,0:6]
-
-
-    edges=edges[edges["value"]>0.1] #10 %
-
+    edges=edges[edges["value"]>0.12] #10 %
+    
     nodes=pd.DataFrame({'id': node_id,'value': node_pA ,'label': node_name,'title': ["P(A): " + str(i*100)[0:5]+"%" for i in node_pA]})
     nodes
 
