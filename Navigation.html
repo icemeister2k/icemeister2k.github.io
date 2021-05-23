@@ -176,7 +176,7 @@
             // });
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
             .then(response => response.json())
-            .then(data => redrawAll(data[1], data[0]));
+            .then(data => {redrawAll(data[1], data[0])});
 
 
         }
