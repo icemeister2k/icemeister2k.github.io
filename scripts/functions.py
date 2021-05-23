@@ -281,14 +281,14 @@ def buildNetwork(dat_filtered):
     s=adverse_num_df["n"].sum()
 
     #top100
-    a=adverse_num_df["symptom"].iloc[len(adverse_num_df)-126:len(adverse_num_df)]
+    a=adverse_num_df["symptom"].iloc[len(adverse_num_df)-100:len(adverse_num_df)]
     print(list(a))
     #b=np.array(adverse_num_df["symptom"][len(adverse_num_df)-100:len(adverse_num_df)])
     b=np.array(list(a))
     c="|".join(b)
 
     #p(A)
-    d=list(adverse_num_df["n"].iloc[len(adverse_num_df)-126:len(adverse_num_df)])
+    d=list(adverse_num_df["n"].iloc[len(adverse_num_df)-100:len(adverse_num_df)])
     f=d/s
     #df mit top100
     dat_filtered=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(c,na=False)]
@@ -341,17 +341,17 @@ def buildNetwork(dat_filtered):
                 #compute pAB
                 edge_pAB.append(f[j]*f[e2])
                 #calculate  pB|A
-                nBIA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[i],na=False)])
+                nBIA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[i]])
                 num.append(nBIA)
                 edge_pBIA.append(nBIA/d[e2])
                 #calculate  pBuA
                 edge_pBuA.append((nBIA/d[e2])*f[j])
                 #calculate pA|B 
                 #A num symptoms 
-                nA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j],na=False)])
-                A_dat=temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j],na=False)]
+                nA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[j]])
+                A_dat=temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[j]]
                 #num A symptoms also containing B
-                nAIB=len(A_dat[A_dat['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[i],na=False)])
+                nAIB=len(A_dat[A_dat['Reaction List PT (Duration – Outcome - Seriousness Criteria)']==b[i]])
                 #append if nA is not 0
                 if nA != 0:
                     edge_pAIB.append(nAIB/nA)
