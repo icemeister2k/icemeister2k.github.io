@@ -163,17 +163,20 @@
         function jj() {
 
             document.getElementById("info").innerText = "Aktuelles Dataset: j&j";
-            document.getElementById("img").src = "img/jj.svg";
+            document.getElementById("img").src = "../img/jj.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
-            $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
-                return result;
-            }).then(function (result) {
-                redrawAll(result[1], result[0]);
-            });
+            // $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
+            //     return result;
+            // }).then(function (result) {
+            //     redrawAll(result[1], result[0]);
+            // });
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
+            .then(response => response.json())
+            .then(data => redrawAll(data[1], data[0]));
 
 
         }
