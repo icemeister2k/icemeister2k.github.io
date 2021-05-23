@@ -97,7 +97,6 @@
         console.log(edge_kids);
 
         function overall() {
-            redrawAll(node_kids, edge_kids);
             document.getElementById("info").innerText = "Aktuelles Dataset: Alle schweren Nebenwirkungen in der European Economic Area";
             document.getElementById("img").src = "img/overall_1.svg";
 
@@ -106,6 +105,10 @@
                 dest.parentNode.removeChild(dest);
             }
 
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_all.json')
+            .then(response => response.json())
+            .then(data => {redrawAll(data[1], data[0])});
+
             var imgg = document.createElement('img');
             imgg.src = "img/overall.svg";
             imgg.id = "img2";
@@ -113,7 +116,6 @@
             img1.appendChild(imgg);
         }
         function kids() {
-            redrawAll(node_kids, edge_kids);
             document.getElementById("info").innerText = "Aktuelles Dataset: Kinder (0-17 Jahre)";
             document.getElementById("img").src = "img/kids_overview.svg";
 
@@ -122,6 +124,10 @@
                 dest.parentNode.removeChild(dest);
             }
 
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
+            .then(response => response.json())
+            .then(data => {redrawAll(data[1], data[0])});
+
             var imgg = document.createElement('img');
             imgg.src = "img/kids_pie.svg";
             imgg.id = "img2";
@@ -129,36 +135,43 @@
             img1.appendChild(imgg);
         }
         function astra() {
-            redrawAll(node_astra, edge_astra);
             document.getElementById("info").innerText = "Aktuelles Dataset: Astra se neca";
-            document.getElementById("img").src = "img/astra.svg";
+            document.getElementById("img").src = "../img/astra.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_astra.json')
+            .then(response => response.json())
+            .then(data => {redrawAll(data[1], data[0])});
 
         }
         function pfizer() {
-            redrawAll(node_pfizer, edge_pfizer);
             document.getElementById("info").innerText = "Aktuelles Dataset: Pfizer";
-            document.getElementById("img").src = "img/pfizer.svg";
+            document.getElementById("img").src = "../img/pfizer.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_pfizer.json')
+            .then(response => response.json())
+            .then(data => {redrawAll(data[1], data[0])});
 
         }
         function moderna() {
             redrawAll(node_moderna, edge_moderna);
             document.getElementById("info").innerText = "Aktuelles Dataset: Moderna";
-            document.getElementById("img").src = "img/moderna.svg";
+            document.getElementById("img").src = "../img/moderna.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_moderna.json')
+            .then(response => response.json())
+            .then(data => {redrawAll(data[1], data[0])});
         }
         function jj() {
 
