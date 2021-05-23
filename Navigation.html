@@ -8,12 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://github.com/icemeister2k/EMA_network/blob/main/networkdata/vars.js"></script>
-    <script src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/vars_kids.js"></script>
-    <script src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/vars_astra.js"></script>
-    <script src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/vars_pfizer.js"></script>
-    <script src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/vars_moderna.js"></script>
-    <script src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/vars_jj.js"></script>
     <style>
         html,
         body {
@@ -217,20 +211,7 @@
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
-            // $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_edges_jj.json", function (result) {
-            //     const result = result.json();
-            //     return result;
-            // }).then(function (result) {
-            //     fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_nodes_jj.json')
-            //         .then(function (response) {
-            //             const data = response;
-            //             return ([data, result])
-            //         }).then(function ([data, result]) {
-            //             console.log(data);
-            //             redrawAll(data, result);
-            //         })
-            // });
-            $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_nodes_kids_.json", function (result) {
+            $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
                 return result;
             }).then(function (result) {
                 redrawAll(result[1], result[0]);
@@ -387,7 +368,6 @@
             });
 
             network.on("click", neighbourhoodHighlight);
-            //network.on("click", drawBars);
 
             function neighbourhoodHighlight(params) {
                 // if something is selected:
@@ -419,10 +399,7 @@
                     // filter by selected node for grouped column graph
                     var selectednode_df = json_to_filter.filter(a => a.id_from == selectedNode);
                     var connectednodes_df = json_to_filter.filter(a => a.id_from !== selectedNode);
-                    console.log(selectednode_df);
-                    console.log(typeof (selectednode_df[0]) == "undefined");
-                    console.log(selectednode_df[0]);
-                    console.log(connectednodes_df);
+
                     fr = [];
                     tos = [];
                     tit = "";
