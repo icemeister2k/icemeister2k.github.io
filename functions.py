@@ -281,14 +281,14 @@ def buildNetwork(dat_filtered):
     s=adverse_num_df["n"].sum()
 
     #top100
-    a=adverse_num_df["symptom"].iloc[len(adverse_num_df)-126:len(adverse_num_df)]
+    a=adverse_num_df["symptom"].iloc[len(adverse_num_df)-100:len(adverse_num_df)]
     print(list(a))
     #b=np.array(adverse_num_df["symptom"][len(adverse_num_df)-100:len(adverse_num_df)])
     b=np.array(list(a))
     c="|".join(b)
 
     #p(A)
-    d=list(adverse_num_df["n"].iloc[len(adverse_num_df)-126:len(adverse_num_df)])
+    d=list(adverse_num_df["n"].iloc[len(adverse_num_df)-100:len(adverse_num_df)])
     f=d/s
     #df mit top100
     dat_filtered=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(c,na=False)]
