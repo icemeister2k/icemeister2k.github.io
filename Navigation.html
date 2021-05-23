@@ -12,8 +12,8 @@
         html,
         body {
             font: 20px arial;
-            padding-left: 0%;
-            padding-right: 0%;
+            padding-left: 5%;
+            padding-right: 5%;
         }
 
         #mynetwork {
@@ -91,11 +91,10 @@
     </style>
     <script>
 
-        console.log(edge_kids);
 
         function overall() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Alle schweren Nebenwirkungen in der European Economic Area";
-            document.getElementById("img").src = "img/overall_1.svg";
+            document.getElementById("img").src = "../img/overall_1.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -103,18 +102,18 @@
             }
 
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_all.json')
-            .then(response => response.json())
-            .then(data => {redrawAll(data[1], data[0])});
+                .then(response => response.json())
+                .then(data => { redrawAll(data[1], data[0]) });
 
             var imgg = document.createElement('img');
-            imgg.src = "img/overall.svg";
+            imgg.src = "../img/overall.svg";
             imgg.id = "img2";
             var img1 = document.querySelector('#img1');
             img1.appendChild(imgg);
         }
         function kids() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Kinder (0-17 Jahre)";
-            document.getElementById("img").src = "img/kids_overview.svg";
+            document.getElementById("img").src = "../img/kids_overview.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -122,11 +121,11 @@
             }
 
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
-            .then(response => response.json())
-            .then(data => {redrawAll(data[1], data[0])});
+                .then(response => response.json())
+                .then(data => { redrawAll(data[1], data[0]) });
 
             var imgg = document.createElement('img');
-            imgg.src = "img/kids_pie.svg";
+            imgg.src = "../img/kids_pie.svg";
             imgg.id = "img2";
             var img1 = document.querySelector('#img1');
             img1.appendChild(imgg);
@@ -140,8 +139,8 @@
                 dest.parentNode.removeChild(dest);
             }
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_astra.json')
-            .then(response => response.json())
-            .then(data => {redrawAll(data[1], data[0])});
+                .then(response => response.json())
+                .then(data => { redrawAll(data[1], data[0]) });
 
         }
         function pfizer() {
@@ -153,8 +152,8 @@
                 dest.parentNode.removeChild(dest);
             }
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_pfizer.json')
-            .then(response => response.json())
-            .then(data => {redrawAll(data[1], data[0])});
+                .then(response => response.json())
+                .then(data => { redrawAll(data[1], data[0]) });
 
         }
         function moderna() {
@@ -166,8 +165,8 @@
                 dest.parentNode.removeChild(dest);
             }
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_moderna.json')
-            .then(response => response.json())
-            .then(data => {redrawAll(data[1], data[0])});
+                .then(response => response.json())
+                .then(data => { redrawAll(data[1], data[0]) });
         }
         function jj() {
 
@@ -184,8 +183,8 @@
             //     redrawAll(result[1], result[0]);
             // });
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
-            .then(response => response.json())
-            .then(data => {redrawAll(data[1], data[0])});
+                .then(response => response.json())
+                .then(data => { redrawAll(data[1], data[0]) });
 
 
         }
@@ -435,9 +434,13 @@
         //     redrawAll(result[1], result[0]);
         // });
 
-        fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
-            .then(response => response.json())
-            .then(data => redrawAll(data[1], data[0]));
+
+
+        window.onload = function () {
+            fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_all.json')
+                .then(response => response.json())
+                .then(data => redrawAll(data[1], data[0]));
+        }
 
 
 
@@ -450,7 +453,7 @@
 <body>
     <h1>1. interaktives conditional probability network </h1>
     <div id="divhighlight">
-        <h2>Top126 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</h2>
+        <p id="big">Top100 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</p>
         <p id="big">Dataset wechseln:<button onclick="overall()">Overall</button><button
                 onclick="kids()">Kinder</button><button onclick="astra()">Astra</button><button
                 onclick="pfizer()">Pfizer</button><button onclick="moderna()">Moderna</button><button
@@ -459,13 +462,13 @@
         </p>
     </div>
 
-    <h2 id="info">Aktuelles Dataset: Alle schweren Nebenwirkungen in der European Economic Area</h2>
+    <h2 id="info">Aktuelles Dataset: European Economic Area</h2>
     <p id="small">Auf nodes klicken für mehr Infos</p>
     <div id="mynetwork"></div>
     <div id="chartContainer" style="height: 600px; width: 100%"></div>
     <hr>
     <h1>2. Plots</h1>
-    <div id="img1"><img id="img" src="img/overall_1.svg"><img id="img2" src="img/overall.svg"></div>
+    <div id="img1"><img id="img" src="../img/overall_1.svg"><img id="img2" src="../img/overall.svg"></div>
     <hr>
     <h1>3. Quellen & Methoden</h1>
     <p><b>Datenquellen:</b><br><br>Impfnebenwirkungen: <a href="https://www.adrreports.eu/en/" target="_blank">EMA
@@ -477,12 +480,12 @@
         weitere Sets aufgeteilt<br><br>2. Aus dem gefilterten Set wurden einzigartige Diagnose-keywords extrahiert, das
         Set nach den erhaltenen einzigartigen keywords aggregiert, das resultierende Set nach Häufigkeit pro Symptom
         sortiert und daraus die 126 häufigsten Symptome extrahiert.<br><br>3. Das ursprüngliche gefilterte Set wurde
-        nach Häufigkeit der erhaltenen top126 Symptome gefiltert und daraus die jeweiligen Wahrscheinlichkeiten ( =P(A)
+        nach Häufigkeit der erhaltenen top100 Symptome gefiltert und daraus die jeweiligen Wahrscheinlichkeiten ( =P(A)
         = ein node im Graph) berechnet. Die nodes sind größer dargestellt je größer die generelle Häufigkeit eines
         Symptoms P(A).
         <br><br>4. die Verbindungen zwischen den nodes (edges) wurden berechnet indem das ursprüngliche gefilterte Set
-        erst nach dem jeweiligen Symptom (Top126) gefiltert wurde und daraus wurde nach dem gleichzeitigen Vorhandensein
-        der 125 übrigen Symptome das jeweilige conditional probability P(B|A) berechnet. Wenn p(B|A) größer als 10% war
+        erst nach dem jeweiligen Symptom (Top100) gefiltert wurde und daraus wurde nach dem gleichzeitigen Vorhandensein
+        der 99 übrigen Symptome das jeweilige conditional probability P(B|A) berechnet. Wenn p(B|A) größer als 10% war
         wurde die jeweilige Verbindung in das resultierende network integriert.
     </p>
 
