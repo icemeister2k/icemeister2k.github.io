@@ -217,18 +217,23 @@
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
-            $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_edges_jj.json", function (result) {
-                const result = result.json();
+            // $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_edges_jj.json", function (result) {
+            //     const result = result.json();
+            //     return result;
+            // }).then(function (result) {
+            //     fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_nodes_jj.json')
+            //         .then(function (response) {
+            //             const data = response;
+            //             return ([data, result])
+            //         }).then(function ([data, result]) {
+            //             console.log(data);
+            //             redrawAll(data, result);
+            //         })
+            // });
+            $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_nodes_kids_.json", function (result) {
                 return result;
             }).then(function (result) {
-                fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_nodes_jj.json')
-                    .then(function (response) {
-                        const data = response;
-                        return ([data, result])
-                    }).then(function ([data, result]) {
-                        console.log(data);
-                        redrawAll(data, result);
-                    })
+                redrawAll(result[1], result[0]);
             });
 
 
