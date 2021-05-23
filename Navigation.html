@@ -12,17 +12,21 @@
         html,
         body {
             font: 20px arial;
-            padding-left: 5%;
-            padding-right: 5%;
+            padding-left: 1%;
+            padding-right: 1%;
         }
 
         #mynetwork {
             width: 100%;
-            height: 700px;
+            height: 600px;
             border: 1px solid lightgray;
         }
 
         #img {
+            width: 100%;
+            padding-left: 0%;
+        }
+        #img2 {
             width: 100%;
             padding-left: 0%;
         }
@@ -94,7 +98,7 @@
 
         function overall() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Alle schweren Nebenwirkungen in der European Economic Area";
-            document.getElementById("img").src = "../img/overall_1.svg";
+            document.getElementById("img").src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall_1.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -106,14 +110,14 @@
                 .then(data => { redrawAll(data[1], data[0]) });
 
             var imgg = document.createElement('img');
-            imgg.src = "../img/overall.svg";
+            imgg.src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall.svg";
             imgg.id = "img2";
             var img1 = document.querySelector('#img1');
             img1.appendChild(imgg);
         }
         function kids() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Kinder (0-17 Jahre)";
-            document.getElementById("img").src = "../img/kids_overview.svg";
+            document.getElementById("img").src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/kids_overview.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -125,14 +129,14 @@
                 .then(data => { redrawAll(data[1], data[0]) });
 
             var imgg = document.createElement('img');
-            imgg.src = "../img/kids_pie.svg";
+            imgg.src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/kids_pie.svg";
             imgg.id = "img2";
             var img1 = document.querySelector('#img1');
             img1.appendChild(imgg);
         }
         function astra() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Astra se neca";
-            document.getElementById("img").src = "../img/astra.svg";
+            document.getElementById("img").src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/astra.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -145,7 +149,7 @@
         }
         function pfizer() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Pfizer";
-            document.getElementById("img").src = "../img/pfizer.svg";
+            document.getElementById("img").src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/pfizer.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -158,7 +162,7 @@
         }
         function moderna() {
             document.getElementById("info").innerText = "Aktuelles Dataset: Moderna";
-            document.getElementById("img").src = "../img/moderna.svg";
+            document.getElementById("img").src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/moderna.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -171,7 +175,7 @@
         function jj() {
 
             document.getElementById("info").innerText = "Aktuelles Dataset: j&j";
-            document.getElementById("img").src = "../img/jj.svg";
+            document.getElementById("img").src = "https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/jj.svg";
 
             if (document.querySelector('#img2') !== null) {
                 var dest = document.querySelector('#img2');
@@ -198,7 +202,7 @@
                     fontFamily: "calibri"
                 },
                 axisY: {
-                    title: "Wahrschienlichkeit [%]",
+                    title: "Wahrscheinlichkeit [%]",
                     gridColor: "black",
                     fontFamily: "calibri",
                     gridThickness: 0,
@@ -207,10 +211,10 @@
                 axisX: {
                     // labelAngle: 45,
                     // labelWrap: false,
-                    // labelAutoFit: false,
-                    interval: 1,
-                    labelFontSize: 10,
-                    labelMaxWidth: 100,
+                    labelAutoFit: true,
+                    // interval: 1,
+                    // labelFontSize: 20,
+                    // labelMaxWidth: 100,
 
                     labelFontColor: "black"
                 },
@@ -453,7 +457,7 @@
 <body>
     <h1>1. interaktives conditional probability network </h1>
     <div id="divhighlight">
-        <p id="big">Top100 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</p>
+        <p id="small">Top100 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</p>
         <p id="big">Dataset wechseln:<button onclick="overall()">Overall</button><button
                 onclick="kids()">Kinder</button><button onclick="astra()">Astra</button><button
                 onclick="pfizer()">Pfizer</button><button onclick="moderna()">Moderna</button><button
@@ -468,7 +472,7 @@
     <div id="chartContainer" style="height: 600px; width: 100%"></div>
     <hr>
     <h1>2. Plots</h1>
-    <div id="img1"><img id="img" src="../img/overall_1.svg"><img id="img2" src="../img/overall.svg"></div>
+    <div id="img1"><img id="img" src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall_1.svg"><img id="img2" src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall.svg"></div>
     <hr>
     <h1>3. Quellen & Methoden</h1>
     <p><b>Datenquellen:</b><br><br>Impfnebenwirkungen: <a href="https://www.adrreports.eu/en/" target="_blank">EMA
