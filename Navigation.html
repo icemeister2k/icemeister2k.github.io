@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <style>
@@ -93,48 +92,6 @@
             font-weight: normal;
         }
     </style>
-
-</head>
-
-<body>
-    <h1>1. interaktives conditional probability network </h1>
-    <div id="divhighlight">
-        <h2>Top126 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</h2>
-        <p id="big">Dataset wechseln:<button onclick="overall()">Overall</button><button
-                onclick="kids()">Kinder</button><button onclick="astra()">Astra</button><button
-                onclick="pfizer()">Pfizer</button><button onclick="moderna()">Moderna</button><button
-                onclick="jj()">J&J</button>
-
-        </p>
-    </div>
-
-    <h2 id="info">Aktuelles Dataset: Alle schweren Nebenwirkungen in der European Economic Area</h2>
-    <p id="small">Auf nodes klicken für mehr Infos</p>
-    <div id="mynetwork"></div>
-    <div id="chartContainer" style="height: 600px; width: 100%"></div>
-    <hr>
-    <h1>2. Plots</h1>
-    <div id="img1"><img id="img" src="img/overall_1.svg"><img id="img2" src="img/overall.svg"></div>
-    <hr>
-    <h1>3. Quellen & Methoden</h1>
-    <p><b>Datenquellen:</b><br><br>Impfnebenwirkungen: <a href="https://www.adrreports.eu/en/" target="_blank">EMA
-            Datenbank</a><br>Covid19 Tote und Impfungen pro Tag: <a
-            href="https://github.com/owid/covid-19-data/tree/master/public/data" target="_blank">ourworldindata.org -
-            github repo</a><br><br>
-        <b>Methoden:</b><br><br><b>network:</b><br>1. Dataset wurde erst nach Diagnose-keywords gefiltert
-        (Hospitalization/Disabling/Death/Fatal), anschließend nach dem Alter (Kinder Dataset) bzw. nach Vakzin in
-        weitere Sets aufgeteilt<br><br>2. Aus dem gefilterten Set wurden einzigartige Diagnose-keywords extrahiert, das
-        Set nach den erhaltenen einzigartigen keywords aggregiert, das resultierende Set nach Häufigkeit pro Symptom
-        sortiert und daraus die 126 häufigsten Symptome extrahiert.<br><br>3. Das ursprüngliche gefilterte Set wurde
-        nach Häufigkeit der erhaltenen top126 Symptome gefiltert und daraus die jeweiligen Wahrscheinlichkeiten ( =P(A)
-        = ein node im Graph) berechnet. Die nodes sind größer dargestellt je größer die generelle Häufigkeit eines
-        Symptoms P(A).
-        <br><br>4. die Verbindungen zwischen den nodes (edges) wurden berechnet indem das ursprüngliche gefilterte Set
-        erst nach dem jeweiligen Symptom (Top126) gefiltert wurde und daraus wurde nach dem gleichzeitigen Vorhandensein
-        der 125 übrigen Symptome das jeweilige conditional probability P(B|A) berechnet. Wenn p(B|A) größer als 10% war
-        wurde die jeweilige Verbindung in das resultierende network integriert.
-    </p>
-
     <script>
 
         console.log(edge_kids);
@@ -470,6 +427,49 @@
 
 
     </script>
+
+</head>
+
+<body>
+    <h1>1. interaktives conditional probability network </h1>
+    <div id="divhighlight">
+        <h2>Top126 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</h2>
+        <p id="big">Dataset wechseln:<button onclick="overall()">Overall</button><button
+                onclick="kids()">Kinder</button><button onclick="astra()">Astra</button><button
+                onclick="pfizer()">Pfizer</button><button onclick="moderna()">Moderna</button><button
+                onclick="jj()">J&J</button>
+
+        </p>
+    </div>
+
+    <h2 id="info">Aktuelles Dataset: Alle schweren Nebenwirkungen in der European Economic Area</h2>
+    <p id="small">Auf nodes klicken für mehr Infos</p>
+    <div id="mynetwork"></div>
+    <div id="chartContainer" style="height: 600px; width: 100%"></div>
+    <hr>
+    <h1>2. Plots</h1>
+    <div id="img1"><img id="img" src="img/overall_1.svg"><img id="img2" src="img/overall.svg"></div>
+    <hr>
+    <h1>3. Quellen & Methoden</h1>
+    <p><b>Datenquellen:</b><br><br>Impfnebenwirkungen: <a href="https://www.adrreports.eu/en/" target="_blank">EMA
+            Datenbank</a><br>Covid19 Tote und Impfungen pro Tag: <a
+            href="https://github.com/owid/covid-19-data/tree/master/public/data" target="_blank">ourworldindata.org -
+            github repo</a><br><br>
+        <b>Methoden:</b><br><br><b>network:</b><br>1. Dataset wurde erst nach Diagnose-keywords gefiltert
+        (Hospitalization/Disabling/Death/Fatal), anschließend nach dem Alter (Kinder Dataset) bzw. nach Vakzin in
+        weitere Sets aufgeteilt<br><br>2. Aus dem gefilterten Set wurden einzigartige Diagnose-keywords extrahiert, das
+        Set nach den erhaltenen einzigartigen keywords aggregiert, das resultierende Set nach Häufigkeit pro Symptom
+        sortiert und daraus die 126 häufigsten Symptome extrahiert.<br><br>3. Das ursprüngliche gefilterte Set wurde
+        nach Häufigkeit der erhaltenen top126 Symptome gefiltert und daraus die jeweiligen Wahrscheinlichkeiten ( =P(A)
+        = ein node im Graph) berechnet. Die nodes sind größer dargestellt je größer die generelle Häufigkeit eines
+        Symptoms P(A).
+        <br><br>4. die Verbindungen zwischen den nodes (edges) wurden berechnet indem das ursprüngliche gefilterte Set
+        erst nach dem jeweiligen Symptom (Top126) gefiltert wurde und daraus wurde nach dem gleichzeitigen Vorhandensein
+        der 125 übrigen Symptome das jeweilige conditional probability P(B|A) berechnet. Wenn p(B|A) größer als 10% war
+        wurde die jeweilige Verbindung in das resultierende network integriert.
+    </p>
+
+
 
 </body>
 
