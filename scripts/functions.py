@@ -267,118 +267,101 @@ def buildNetwork(dat_filtered):
     un_symptoms=pd.Series(adverse).unique()
     sym =[]
     n =[]
-
+    
     for i in range(len(un_symptoms)):
         n.append(len(pd.Series(adverse)[pd.Series(adverse)==un_symptoms[i]]))
         sym.append(un_symptoms[i])
 
     adverse_num_df = pd.DataFrame({"symptom":pd.Series(sym),"n":pd.Series(n)})
     adverse_num_df=adverse_num_df.sort_values(by=['n'])
-    adverse_num_df
-
-
-    #summe Nebenwirkungen für p(A)-Berechnung
-    s=adverse_num_df["n"].sum()
-
     #top100
     a=adverse_num_df["symptom"].iloc[len(adverse_num_df)-100:len(adverse_num_df)]
     print(list(a))
-    #b=np.array(adverse_num_df["symptom"][len(adverse_num_df)-100:len(adverse_num_df)])
     b=np.array(list(a))
     c="|".join(b)
-
-    #p(A)
-    d=list(adverse_num_df["n"].iloc[len(adverse_num_df)-100:len(adverse_num_df)])
-    f=d/s
     #df mit top100
     dat_filtered=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(c,na=False)]
+    # len(dat) für pA Berechnung
+    N=len(dat_filtered)
     #p(B u A) = p(A u B)
     #--> p(B u A) = p(B|A)*p(A) = p(A|B)*p(B)
     # if dependent events: P(B|A) = P(A u B) / P(A)
     # if independent events: P(B|A) = P(B)
     edge1=[]
     edge2=[]
-    num=[]
-    edge_pA = []
-    edge_pB =[]
-
-    used = []
-
-    node_id=[]
-    node_name=[]
-    node_group=[]
-    node_pA = []
-    edge_pAB = []
-    edge_pAIB = []
-    edge_pBIA = []
-    edge_pBuA = []
-    edge_pAuB=[]
     edge_to=[]
     edge_from=[]
+    edge_pA = []
+    edge_pB =[]
+    edge_pAIB = []
+    edge_pBIA = []
+    edge_pAuB = []
+    edge_pBuA = []
+    # check if dependent events: P(B|A) = P(A u B) / P(A)
+    edge_check = []
+    
+    node_id=[]
+    node_name=[]
+    node_pA = []
 
     for j in range(len(b)):
         node_id.append(j)
         node_name.append(b[j])
 
         temp=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j])]
-        node_group.append(1/((len(b)-j)/len(b)))
 
         #node Probability
-        node_pA.append(f[j])
+        pA=len(temp)/N
+        node_pA.append(pA)
 
         for i in range(len(b)):
             e2=int(np.where(pd.Series(b)==b[i])[0][0])
             if b[i] != b[j]:
-                #print(b[i],b[j])
+                #edge from/to  ids
                 edge1.append(j)
                 #what is index of actual [remaining] element in the original array(b)?
                 edge2.append(e2)
+                #edge from/to names
                 edge_from.append(b[j])
                 edge_to.append(b[i])
-                #copy pA,pB from node data
-                edge_pA.append(f[j])
-                edge_pB.append(f[e2])
+
                 #A num symptoms 
                 nA=len(temp)
-                #compute pAB
-                edge_pAB.append(f[j]*f[e2])
+                #
                 #calculate  pB|A
                 nBIA=len(temp[temp['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[i])])
-                num.append(nBIA)
-                if nA != 0:
-                    edge_pBIA.append(nBIA/nA)
-                    #calculate  pBuA
-                    edge_pBuA.append((nBIA/nA)*f[j])
-                else:
-                    edge_pBIA.append(0)
-                    #calculate  pBuA
-                    edge_pBuA.append(0)
-                    
+                pBIA = nBIA/nA
+                edge_pBIA.append(pBIA)
+                #calculate  pBuA
+                edge_pBuA.append(pBIA*pA)
+                
                 #calculate pA|B 
                 temp_b=dat_filtered[dat_filtered['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[i])]
                 nB=len(temp_b)
+                pB= nB/N
+                edge_pB.append(pB)
                 
                 nAIB = len(temp_b[temp_b['Reaction List PT (Duration – Outcome - Seriousness Criteria)'].str.contains(b[j])])
-                #num A symptoms also containing B
-                #append if nA is not 0
-                if nA != 0:
-                    edge_pAIB.append(nAIB/nB)
-                else:
-                    edge_pAIB.append(0)
-                if nA != 0:
-                    edge_pAuB.append((nAIB/nB)*f[e2])
-                else:
-                    edge_pAuB.append(0)
+                pAIB=nAIB/nB
+                edge_pAIB.append(pAIB)
+                #calculate pAuB
+                pAuB = pAIB*pB
+                edge_pAuB.append(pAuB)
+                
+                #if dependent events: P(B|A) = P(A u B)/P(A)
+                edge_check.append(pAuB/pA)
+
 
     edges=pd.DataFrame({'from': edge1, 'to': edge2,
                         'value': edge_pBIA,
-                        #"title":["P(B|A): " + str(round(i *100,2))+ "%" for i in edge_pBIA],
                         "title":["P(B|A): " + str(round(i *100,2))+ "%" for i in edge_pBIA],
                         "fnode":edge_from,"tnode":edge_to,
+                        "pB": edge_pB,"calculated PBIA": edge_check,
                        "p(A|B)":edge_pAIB,"p(B|A)":edge_pBIA,"p(BuA)":edge_pBuA,"p(AuB)":edge_pAuB
                        })
-    edges=edges.iloc[:,0:6]
-    edges=edges[edges["value"]>0.12] #10 %
+    edges=edges.iloc[:,0:8]
+    #filter edges by candidates in range of calculated BIA and empiric BIA +- 10%
+    edges=edges[(edges["calculated PBIA"] < (edges["value"]*1.1))&(edges["calculated PBIA"] > (edges["value"]*0.9))] #10 %
     
     nodes=pd.DataFrame({'id': node_id,'value': node_pA ,'label': node_name,'title': ["P(A): " + str(i*100)[0:5]+"%" for i in node_pA]})
     nodes
