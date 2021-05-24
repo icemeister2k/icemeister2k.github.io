@@ -1,11 +1,8 @@
 <!DOCTYPE HTML>
 <html>
-
-
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -27,6 +24,7 @@
             width: 100%;
             padding-left: 0%;
         }
+
         #img2 {
             width: 100%;
             padding-left: 0%;
@@ -92,6 +90,80 @@
 
         #info {
             font-weight: normal;
+        }
+
+        @media only screen and (max-device-width: 480px) {
+
+            /* styles for mobile browsers smaller than 480px; (iPhone) */
+            html,
+            body {
+                font: 6px arial;
+                padding-left: 2%;
+                padding-right: 2%;
+            }
+
+            #mynetwork {
+                width: 92%;
+                height: 220px;
+                border: 1px solid lightgray;
+            }
+
+
+            button {
+                background-color: #919a92;
+                border: none;
+                color: rgb(0, 0, 0);
+                padding: 3px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 6px;
+                font-family: arial;
+                margin: 2px 2px;
+                cursor: pointer;
+
+            }
+
+            button:hover {
+                background-color: #008CBA;
+                color: white;
+                font-family: arial;
+            }
+
+            button:active {
+                border: 1px solid rgb(0, 128, 119);
+                font-size: 8px;
+                font-weight: bold;
+                font-family: arial;
+                color: white;
+            }
+
+            button:focus {
+                background: rgb(0, 0, 0);
+                font-size: 8px;
+                font-family: arial;
+                font-weight: bold;
+                color: white;
+            }
+
+            #big {
+                font-size: 6px;
+                font-weight: bold;
+                font-family: arial;
+            }
+
+            #small {
+                font-size: 4px;
+                font-family: arial;
+                /* font-weight: bold; */
+            }
+
+
+            p {
+                font-size: 6px;
+                font-family: arial;
+            }
+
         }
     </style>
     <script>
@@ -182,11 +254,7 @@
                 var dest = document.querySelector('#img2');
                 dest.parentNode.removeChild(dest);
             }
-            // $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
-            //     return result;
-            // }).then(function (result) {
-            //     redrawAll(result[1], result[0]);
-            // });
+
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json')
                 .then(response => response.json())
                 .then(data => { redrawAll(data[1], data[0]) });
@@ -200,7 +268,8 @@
                 animationEnabled: true,
                 title: {
                     text: "Node: " + title,
-                    fontFamily: "calibri"
+                    fontFamily: "calibri",
+                    fontSize:18
                 },
                 axisY: {
                     title: "Wahrscheinlichkeit [%]",
@@ -214,6 +283,7 @@
                     // labelWrap: true,
                     labelAutoFit: true,
                     interval: 1,
+                    fontFamily: "calibri",
                     // labelFontSize: 20,
                     // labelMaxWidth: 100,
 
@@ -227,7 +297,7 @@
                     cursor: "pointer",
                     fontFamily: "calibri",
                     itemclick: toggleDataSeries,
-                    fontSize: 30,
+                    fontSize: 15,
                     verticalAlign: "top",
                     horizontalAlign: "center",
                     cursor: "pointer",
@@ -278,17 +348,17 @@
                 nodes: {
                     shape: "dot",
                     scaling: {
-                        min: 20,
-                        max: 35,
+                        min: 30,
+                        max: 60,
                         label: {
-                            min: 25,
-                            max: 55,
+                            min: 35,
+                            max: 65,
                             // drawThreshold: 12,
                             // maxVisible: 20,
                         },
                     },
                     font: {
-                        size: 14,
+                        size: 12,
                         face: "Tahoma",
                     },
                 },
@@ -330,7 +400,7 @@
                     hideEdgesOnZoom: true,
                 },
             };
-            var data = { nodes: nodesDataset, edges: edgesDataset }; // Note: data is coming from ./datasources/WorldCup2014.js
+            var data = { nodes: nodesDataset, edges: edgesDataset }; 
 
             network = new vis.Network(container, data, options);
 
@@ -344,14 +414,12 @@
             network.on("click", neighbourhoodHighlight);
 
             function neighbourhoodHighlight(params) {
-                // if something is selected:
                 if (params.nodes.length > 0) {
                     highlightActive = true;
                     var i, j;
                     var selectedNode = params.nodes[0];
                     var degrees = 2;
 
-                    // mark all nodes as hard to read.
                     for (var nodeId in allNodes) {
                         allNodes[nodeId].color = "rgba(200,200,200,0.2)";
                         if (allNodes[nodeId].hiddenLabel === undefined) {
@@ -363,14 +431,12 @@
                     var allConnectedNodes = [];
 
                     var connectedEdges = network.getConnectedEdges(selectedNode);
-                    // console.log(allEdges[connectedEdges[0]]);
 
                     json_to_filter = [];
                     for (j = 0; j < connectedEdges.length; j++) {
                         json_to_filter.push({ to: String(allEdges[connectedEdges[j]].tnode), from: String(allEdges[connectedEdges[j]].fnode), y: parseFloat(allEdges[connectedEdges[j]].value), id_to: allEdges[connectedEdges[j]].to, id_from: allEdges[connectedEdges[j]].from })
                     }
 
-                    // filter by selected node for grouped column graph
                     var selectednode_df = json_to_filter.filter(a => a.id_from == selectedNode);
                     var connectednodes_df = json_to_filter.filter(a => a.id_from !== selectedNode);
 
@@ -392,10 +458,8 @@
 
                     drawBars(tos, fr, tit);
 
-                    // all first degree nodes get their own color and their label back
                     for (i = 0; i < connectedNodes.length; i++) {
                         allNodes[connectedNodes[i]].color = "rgba(100, 51, 255, 1)";
-                        //console.log(allNodes[connectedNodes[i]]);
                         if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
                             allNodes[connectedNodes[i]].label =
                                 allNodes[connectedNodes[i]].hiddenLabel;
@@ -403,14 +467,12 @@
                         }
                     }
 
-                    // the main node gets its own color and its label back.
                     allNodes[selectedNode].color = "rgba(192, 26, 17, 1)";
                     if (allNodes[selectedNode].hiddenLabel !== undefined) {
                         allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
                         allNodes[selectedNode].hiddenLabel = undefined;
                     }
                 } else if (highlightActive === true) {
-                    // reset all nodes
                     for (var nodeId in allNodes) {
                         allNodes[nodeId].color = "rgba(65, 173, 211, 1)";
                         if (allNodes[nodeId].hiddenLabel !== undefined) {
@@ -420,8 +482,6 @@
                     }
                     highlightActive = false;
                 }
-
-                // transform the object into an array
                 var updateArray = [];
                 for (nodeId in allNodes) {
                     if (allNodes.hasOwnProperty(nodeId)) {
@@ -430,50 +490,34 @@
                 }
                 nodesDataset.update(updateArray);
             }
-
-
         }
-        // $.getJSON("https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_kids.json", function (result) {
-        //     return result;
-        // }).then(function (result) {
-        //     redrawAll(result[1], result[0]);
-        // });
-
-
-
         window.onload = function () {
             fetch('https://raw.githubusercontent.com/icemeister2k/EMA_network/main/networkdata/network_all.json')
                 .then(response => response.json())
                 .then(data => redrawAll(data[1], data[0]));
         }
-
-
-
-
-
     </script>
-
 </head>
-
 <body>
     <h1>1. interaktives conditional probability network </h1>
     <div id="divhighlight">
-        <p id="small">Top100 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)</p>
+        <p id="small">Top100 Symptome von Geimpften mit schweren Nebenwirkungen(Hospitalization/Disabling/Death/Fatal)
+        </p>
         <p id="big">Dataset wechseln:<button onclick="overall()">Overall</button><button
                 onclick="kids()">Kinder</button><button onclick="astra()">Astra</button><button
                 onclick="pfizer()">Pfizer</button><button onclick="moderna()">Moderna</button><button
                 onclick="jj()">J&J</button>
-
         </p>
     </div>
-
     <h2 id="info">Aktuelles Dataset: European Economic Area</h2>
     <p id="small">Auf nodes klicken für mehr Infos</p>
     <div id="mynetwork"></div>
-    <div id="chartContainer" style="height: 600px; width: 100%"></div>
+    <div id="chartContainer" style="height: 300px; width: 95%"></div>
     <hr>
     <h1>2. Plots</h1>
-    <div id="img1"><img id="img" src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall_1.svg"><img id="img2" src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall.svg"></div>
+    <div id="img1"><img id="img"
+            src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall_1.svg"><img id="img2"
+            src="https://raw.githubusercontent.com/icemeister2k/EMA_network/main/img/overall.svg"></div>
     <hr>
     <h1>3. Quellen & Methoden</h1>
     <p><b>Datenquellen:</b><br><br>Impfnebenwirkungen: <a href="https://www.adrreports.eu/en/" target="_blank">EMA
