@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -165,6 +166,80 @@
             }
 
         }
+
+        @media only screen and (max-device-width: 900px) {
+
+            /* styles for mobile browsers smaller than 480px; (iPhone) */
+            html,
+            body {
+                font: 12px arial;
+                padding-left: 4%;
+                padding-right: 4%;
+            }
+
+            #mynetwork {
+                width: 92%;
+                height: 320px;
+                border: 1px solid lightgray;
+            }
+
+
+            button {
+                background-color: #919a92;
+                border: none;
+                color: rgb(0, 0, 0);
+                padding: 3px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;
+                font-family: arial;
+                margin: 2px 2px;
+                cursor: pointer;
+
+            }
+
+            button:hover {
+                background-color: #008CBA;
+                color: white;
+                font-family: arial;
+            }
+
+            button:active {
+                border: 1px solid rgb(0, 128, 119);
+                font-size: 16px;
+                font-weight: bold;
+                font-family: arial;
+                color: white;
+            }
+
+            button:focus {
+                background: rgb(0, 0, 0);
+                font-size: 16px;
+                font-family: arial;
+                font-weight: bold;
+                color: white;
+            }
+
+            #big {
+                font-size: 12px;
+                font-weight: bold;
+                font-family: arial;
+            }
+
+            #small {
+                font-size: 6px;
+                font-family: arial;
+                /* font-weight: bold; */
+            }
+
+
+            p {
+                font-size: 6px;
+                font-family: arial;
+            }
+
+        }
     </style>
     <script>
 
@@ -269,7 +344,7 @@
                 title: {
                     text: "Node: " + title,
                     fontFamily: "calibri",
-                    fontSize:18
+                    fontSize: 18
                 },
                 axisY: {
                     title: "Wahrscheinlichkeit [%]",
@@ -400,7 +475,7 @@
                     hideEdgesOnZoom: true,
                 },
             };
-            var data = { nodes: nodesDataset, edges: edgesDataset }; 
+            var data = { nodes: nodesDataset, edges: edgesDataset };
 
             network = new vis.Network(container, data, options);
 
@@ -498,6 +573,7 @@
         }
     </script>
 </head>
+
 <body>
     <h1>1. interaktives conditional probability network </h1>
     <div id="divhighlight">
@@ -528,7 +604,7 @@
         (Hospitalization/Disabling/Death/Fatal), anschließend nach dem Alter (Kinder Dataset) bzw. nach Vakzin in
         weitere Sets aufgeteilt<br><br>2. Aus dem gefilterten Set wurden einzigartige Diagnose-keywords extrahiert, das
         Set nach den erhaltenen einzigartigen keywords aggregiert, das resultierende Set nach Häufigkeit pro Symptom
-        sortiert und daraus die 126 häufigsten Symptome extrahiert.<br><br>3. Das ursprüngliche gefilterte Set wurde
+        sortiert und daraus die 100 häufigsten Symptome extrahiert.<br><br>3. Das ursprüngliche gefilterte Set wurde
         nach Häufigkeit der erhaltenen top100 Symptome gefiltert und daraus die jeweiligen Wahrscheinlichkeiten ( =P(A)
         = ein node im Graph) berechnet. Die nodes sind größer dargestellt je größer die generelle Häufigkeit eines
         Symptoms P(A).
